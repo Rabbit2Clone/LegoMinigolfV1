@@ -233,6 +233,8 @@ task main()
 
 	// power the sensor ON.
 	distCommand(DISTON);
+
+
 	nxtDisplayTextLine(0, "mindsensors.com");
 	nxtDisplayTextLine(1, "Dist sensor Demo");
 	nxtDisplayTextLine(2, "use Port: 1");
