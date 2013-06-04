@@ -55,23 +55,44 @@ void schlagen(int speed, int range) // Einstellbare Schlagbewegung, um die Staer
 		nMotorEncoder[hitMotor] = 0;
 		nMotorEncoderTarget[hitMotor] = range;
 		motor[hitMotor] = speed;
-		while(nMotorRunState[hitMotor] != runStateIdle)
-		{
-
-		}
+		while(nMotorRunState[hitMotor] != runStateIdle){}
 		wait1Msec(1000);
 		nMotorEncoder[hitMotor] = 0;
 		nMotorEncoderTarget[hitMotor] = range;
 		motor[hitMotor] = -speed;
-		while(nMotorRunState[hitMotor] != runStateIdle)
-		{
+		while(nMotorRunState[hitMotor] != runStateIdle){}
 
-		}
 
 	}
 
 
 }
+
+void schlagen_zwei(int speed, int range) // Einstellbare Schlagbewegung, um die Staerke des Schlages zu kontrollieren
+{
+
+ 	if(speed > 100 || speed < -100)
+  {
+
+ 	 writeDebugStreamLine("speed %d value is out of range", speed);
+
+	}
+	else
+	{
+		nMotorEncoder[hitMotor] = 0;
+		nMotorEncoderTarget[hitMotor] = range;
+		motor[hitMotor] = speed;
+		while(nMotorRunState[hitMotor] != runStateIdle){}
+		wait1Msec(1000);
+		nMotorEncoder[hitMotor] = 0;
+		nMotorEncoderTarget[hitMotor] = range;
+		motor[hitMotor] = -speed;
+		while(nMotorRunState[hitMotor] != runStateIdle){}
+	}
+
+
+}
+
 
 
 task main()
