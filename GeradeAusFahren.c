@@ -1,10 +1,13 @@
-#pragma config(Sensor, S1,     sonar,          sensorSONAR)
+/*#pragma config(Sensor, S1,     sonar,          sensorSONAR)
 #pragma config(Sensor, S2,     none,           sensorNone)
 #pragma config(Sensor, S3,     none,           sensorNone)
 #pragma config(Sensor, S4,     gyro,           sensorI2CHiTechnicGyro)
 #pragma config(Motor,  motorA,          hitMotor,      tmotorNXT, PIDControl, encoder)
 #pragma config(Motor,  motorB,          rightMotor,    tmotorNXT, PIDControl, encoder)
-#pragma config(Motor,  motorC,          leftMotor,     tmotorNXT, PIDControl, encoder)
+#pragma config(Motor,  motorC,          leftMotor,     tmotorNXT, PIDControl, encoder)*/
+
+#ifndef _GERADEAUSFAHREN_C_
+#define _GERADEAUSFAHREN_C_
 
 void driveDistance(int distance)
 {
@@ -27,7 +30,9 @@ void driveDistance(int distance)
 
 }
 
-task main{
+#endif /* _GERADEAUSFAHREN_C_ */
+
+/*task main{
 
 driveDistance(250);
-}
+}*/
