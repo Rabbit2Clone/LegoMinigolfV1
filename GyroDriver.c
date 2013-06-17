@@ -38,11 +38,12 @@ typedef enum
 
 TGyroStates nGyroState = stateGyroInit;
 
-float fGyroAngle      = 0.0;              // The absolute angle calculated by the device driver
+float _fGyroAngle      = 0.0;              // The absolute angle calculated by the device driver
 
 task GyroDeviceDriver()
 {
 	float nAngularVelocity;
+	float fGyroAngle = 0.0;
 	const int kNoiseEliminate = 0;
 	long nSumOfSamples = 0;
 	const int kBiasSamples      = 400;
@@ -77,6 +78,7 @@ task GyroDeviceDriver()
 		if ((nAngularVelocity > -kNoiseEliminate) && (nAngularVelocity <= kNoiseEliminate))
 			continue;
 		fGyroAngle += nAngularVelocity * fVelocityFactor;
+		_fGyroAngle = fGyroAngle*0.654545;
 	}
 	return;
 }
