@@ -9,25 +9,52 @@
 #ifndef _GERADEAUSFAHREN_C_
 #define _GERADEAUSFAHREN_C_
 
+//#include "GyroDriver.c"
+
 void driveDistance(int distance)
 {
+	int fAngleDrive = (int)_fGyroAngle;
 
 	distance = distance *2;			// Damit die Strecke in mm uebergeben werden kann muss der Wert hier verdoppelt werden(Experimentiell ermittelt).
-	nMotorEncoder[motorB] = 0;                // reset the Motor Encoder of Motor B
-	nMotorEncoder[motorC] = 0;                // reset the Motor Encoder of Motor C
-	nMotorEncoderTarget[motorB] = distance;        //
-	nMotorEncoderTarget[motorC] = distance;        //
-	motor[motorB] = 20;                       // motor B is run at a power level of 20
-	motor[motorC] = 20;
 
-	while(nMotorRunState[motorB] != runStateIdle && nMotorRunState[motorC] != runStateIdle)
-	// while Motor B AND Motor C are still running (haven't yet reached their target):
+	while(distance)
 	{
+		nMotorEncoder[motorB] = 0;                // reset the Motor Encoder of Motor B
+		nMotorEncoder[motorC] = 0;                // reset the Motor Encoder of Motor C
+		if(distance/100)
+		{
+			nMotorEncoderTarget[motorB] = 100;        //
+			nMotorEncoderTarget[motorC] = 100;
 
+			distance -= 100;
+		}
+		else
+		{
+			nMotorEncoderTarget[motorB] = distance;        //
+			nMotorEncoderTarget[motorC] = distance;        //
+			distance = 0;
+		}
+		motor[motorB] = 15;                       // motor B is run at a power level of 20
+		motor[motorC] = 15;
+
+		while(nMotorRunState[motorB] != runStateIdle && nMotorRunState[motorC] != runStateIdle)
+		// while Motor B AND Motor C are still running (haven't yet reached their target):
+		{
+		}
+
+		if(((int)_fGyroAngle- fAngleDrive) >= 1) // Fahrkorrektur
+		{
+			turn_left(10);
+			nxtDisplayStringAt(62, 48, "  %3d Grad   ", (int)_fGyroAngle);
+		}
+		else if(((int)_fGyroAngle- fAngleDrive) <= -1)
+		{
+			turn_right(10);
+			nxtDisplayStringAt(62, 48, "  %3d Grad   ", (int)_fGyroAngle);
+		}
+		motor[motorB] = 0;                       // motor B is stopped at a power level of 0
+		motor[motorC] = 0;
 	}
-	motor[motorB] = 0;                       // motor B is stopped at a power level of 0
-	motor[motorC] = 0;
-
 }
 
 #endif /* _GERADEAUSFAHREN_C_ */

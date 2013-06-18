@@ -1,7 +1,7 @@
 #pragma config(Sensor, S1,     sonar,          sensorSONAR)
 #pragma config(Sensor, S2,     none,          sensorNone)
 #pragma config(Sensor, S3,     none,          sensorNone)
-#pragma config(Sensor, S4,     gyro,          sensorI2CHiTechnicGyro)
+#pragma config(Sensor, S4,     HTGYRO,          sensorAnalogInactive)
 #pragma config(Motor,  motorA,          hitMotor,      tmotorNXT, PIDControl, encoder)
 #pragma config(Motor,  motorB,          rightMotor,    tmotorNXT, PIDControl, encoder)
 #pragma config(Motor,  motorC,          leftMotor,     tmotorNXT, PIDControl, encoder)
@@ -10,7 +10,7 @@
 #define _Minigolf
 
 
-const tSensors kGyroSensor = S4;      // Connect to port 3. Adjust as appropriate.
+//const tSensors kGyroSensor = S4;      // Connect to port 3. Adjust as appropriate.
 
 #include "test.c" // Muessen so in RobotC eingebunden werden :(
 #include "Distance_read.c"
@@ -22,7 +22,7 @@ const tSensors kGyroSensor = S4;      // Connect to port 3. Adjust as appropriat
 task main()
 {
 	//float fOldAngle = -1;
-	int iOldDistance = 0xFF;
+	//int iOldDistance = 0xFF;
 	//unsigned int i;
 
 	//unsigned int scannedDist[180];
@@ -39,9 +39,9 @@ task main()
 
 	wait1Msec(1000);
 
-	while (!bIsGyroInitialized())
+	//while (!bIsGyroInitialized())
 
-	wait1Msec(3000); // Gyro initialisierung
+	//wait1Msec(3000); // Gyro initialisierung
 
 
 	/*for(i=0;i<180;i++)
@@ -84,16 +84,53 @@ task main()
     wait1Msec(100);
     //turn_left(10);
 	}*/
+	/*
 	iOldDistance = GetDistanceRead();
-	turn_left(90);
+	nxtDisplayStringAt(62, 39, "  %2dmm   ", (int) iOldDistance);
+
+	while(iOldDistance > 150)
+	{
+			driveDistance(iOldDistance-150);
+			wait1Msec(200);
+			iOldDistance = GetDistanceRead();
+			nxtDisplayStringAt(62, 39, "  %2dmm   ", (int) iOldDistance);
+	}
+	wait1Msec(200);
+	iOldDistance = GetDistanceRead();
+	if(iOldDistance < 150)
+	{
+		wait1Msec(200);
+		iOldDistance = GetDistanceRead();
+	}
+
+	nxtDisplayStringAt(62, 39, "  %2dmm   ", (int) iOldDistance);
+	nxtDisplayStringAt(62, 48, "  %3d Grad   ", (int)_fGyroAngle);
+	turn_left(900);
+	nxtDisplayStringAt(62, 48, "  %3d Grad   ", (int)_fGyroAngle);
 	wait1Msec(200);
 	driveDistance(55);
 	wait1Msec(200);
-	turn_right(90);
+	turn_right(900);
+	nxtDisplayStringAt(62, 48, "  %3d Grad   ", (int)_fGyroAngle);
 	wait1Msec(200);
 	driveDistance(iOldDistance);
 	wait1Msec(200);
-	schlagen(20,80);
+	schlagen(20,80);*/
+
+	while(1)
+	{
+		//turn_left(900);
+		turn2Degree(900);
+		nxtDisplayStringAt(62, 48, "  %3d Grad   ", (int)_fGyroAngle);
+		//driveDistance(10);
+		wait1Msec(200);
+		//turn_left(100);
+		//wait1Msec(200);
+		turn2Degree(0);
+		//turn_right(900);
+		nxtDisplayStringAt(62, 48, "  %3d Grad   ", (int)_fGyroAngle);
+		wait1Msec(200);
+	}
 
 	Dist_PowerOff();
 }
