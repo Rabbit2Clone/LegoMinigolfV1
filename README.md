@@ -8,21 +8,31 @@ This is a project from Hochschule Pforzheim, Germany
 
 Das ganze Projekt wird im Rahmen einer Projektarbeit bearbeitet.
 
+Verwendete Sensoren:
 
-Die Programmiersprache für den NXT ist RobotC.
+        S1 Mindsensors DIST-NX V3 10cm bis 80cm
+        S4 hiTechnic Gyro Sensor
+
+        A Hitmotor
+        B linker Motor
+        C Rechter Motor
+
+
+Die Programmiersprache fÃ¼r den NXT ist RobotC.
 
 To Do:
 
 	-> Evaluierung Sensoren und Motoren des NXT
-	-> Bauen eines Spielfeldes für den NXT
-	-> Tasks für die einzelnen Funktionen schreiben:
+	-> Bauen eines Spielfeldes fÃ¼r den NXT
+	-> Tasks fÃ¼r die einzelnen Funktionen schreiben:
 	
 		- Finde Ball
-		- Finde Tor/Loch
-		- Posetionieren zum Ball für Schlag
+		- Position des Lochs ist dem Roboter bekannt
+		- Posetionieren zum Ball fÃ¼r Schlag
 		- Schlag an die Schlagdistanze anpassen
 
 Zukunft:
 
 	-> Hindernisse erkennen
+        -> Finde Loch
 	-> um Hindernisse herumspielen
