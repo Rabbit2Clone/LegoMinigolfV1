@@ -6,13 +6,16 @@ void turn_left(int Degree)// Degree have to be multipy with 10. => 10 Degree ins
 
 	int Degree_New = ((int)(_fGyroAngle*10) - Degree);
 
-	motor[motorC] = -7;
+	nSyncedMotors = synchBC;
+	nSyncedTurnRatio =- 100;
+	//motor[motorC] = -7;
   motor[motorB] = 7;
 
 	while(((int)(_fGyroAngle*10)) > Degree_New)
 	{
+		EndTimeSlice();
 	}
-	motor[motorC] = 0;
+	//motor[motorC] = 0;
   motor[motorB] = 0;
 	wait1Msec(100);
 
@@ -20,42 +23,47 @@ void turn_left(int Degree)// Degree have to be multipy with 10. => 10 Degree ins
   {
 	  if((int)(_fGyroAngle*10) < Degree_New)
 		{
-			motor[motorC] = 2;
+			//motor[motorC] = 2;
 	  	motor[motorB] = -2;
 	  	while(((int)(_fGyroAngle*10)) < Degree_New)
 	  	{
+	  		EndTimeSlice();
 	  	}
 		}
 		wait1Msec(100);
 
 		if(((int)(_fGyroAngle*10)) > Degree_New)
 		{
-			motor[motorC] = -2;
+			//motor[motorC] = -2;
 	  	motor[motorB] = 2;
 	  	while(((int)(_fGyroAngle*10)) > Degree_New)
 	  	{
+	  		EndTimeSlice();
 	  	}
 		}
 		wait1Msec(100);
 	}
-	motor[motorC] = 0;
+	//motor[motorC] = 0;
   motor[motorB] = 0;
-
+	nSyncedMotors = synchNone;
 }
 
 void turn_right(int Degree)// Degree have to be multipy with 10. => 10 Degree insert 100
 {
 	//Degree--;
 	int Degree_New = (int)(_fGyroAngle*10) + Degree;
+	nSyncedMotors = synchCB;
+	nSyncedTurnRatio =- 100;
 
 	motor[motorC] = 7;
-  motor[motorB] = -7;
+  //motor[motorB] = -7;
 
 	while(((int)(_fGyroAngle*10)) < Degree_New)
 	{
+		EndTimeSlice();
 	}
 	motor[motorC] = 0;
-  motor[motorB] = 0;
+  //motor[motorB] = 0;
   wait1Msec(100);
 
   while(((int)(_fGyroAngle*10)) == Degree_New)
@@ -63,9 +71,10 @@ void turn_right(int Degree)// Degree have to be multipy with 10. => 10 Degree in
 	  if(((int)(_fGyroAngle*10)) > Degree_New)
 		{
 			motor[motorC] = -2;
-	  	motor[motorB] = 2;
+	  	//motor[motorB] = 2;
 	  	while(((int)(_fGyroAngle*10)) > Degree_New)
 	  	{
+	  		EndTimeSlice();
 	  	}
 		}
 		wait1Msec(100);
@@ -73,17 +82,18 @@ void turn_right(int Degree)// Degree have to be multipy with 10. => 10 Degree in
 		if((int)(_fGyroAngle*10) < Degree_New)
 		{
 			motor[motorC] = 2;
-	  	motor[motorB] = -2;
+	  	//motor[motorB] = -2;
 	  	while(((int)(_fGyroAngle*10)) < Degree_New)
 	  	{
+	  		EndTimeSlice();
 	  	}
 		}
 		wait1Msec(100);
 	}
 
 	motor[motorC] = 0;
-  motor[motorB] = 0;
-
+  //motor[motorB] = 0;
+	nSyncedMotors = synchNone;
 }
 
 void turn2Degree(int Degree) // Degree have to be multipy with 10. => 10 Degree insert 100
@@ -92,33 +102,44 @@ void turn2Degree(int Degree) // Degree have to be multipy with 10. => 10 Degree 
 	if(((int)(_fGyroAngle*10)) > Degree)
 	{
 		Degree++;
-		motor[motorC] = -7;
+		nSyncedMotors = synchBC;
+		nSyncedTurnRatio = -100;
+
+
+		//motor[motorC] = -7;
 		motor[motorB] = 7;
 		while(((int)(_fGyroAngle*10)) > Degree)
 		{
+			EndTimeSlice();
 		}
+		motor[motorB] = 0;
 	}
 	else
 	{
 		Degree--;
+		nSyncedMotors = synchCB;
+		nSyncedTurnRatio = -100;
 		motor[motorC] = 7;
-		motor[motorB] = -7;
+		//motor[motorB] = -7;
 		while(((int)(_fGyroAngle*10)) < Degree)
 		{
+			EndTimeSlice();
 		}
+		motor[motorC] = 0;
 	}
-	motor[motorC] = 0;
-  motor[motorB] = 0;
 	wait1Msec(100);
 
 	while(((int)(_fGyroAngle*10)) == Degree)
   {
 	  if((int)(_fGyroAngle*10) < Degree)
 		{
+			nSyncedMotors = synchCB;
+			nSyncedTurnRatio = -100;
 			motor[motorC] = 2;
-	  	motor[motorB] = -2;
+	  	//motor[motorB] = -2;
 	  	while(((int)(_fGyroAngle*10)) <= Degree)
 	  	{
+	  		EndTimeSlice();
 	  	}
 		}
 		motor[motorC] = 0;
@@ -126,16 +147,20 @@ void turn2Degree(int Degree) // Degree have to be multipy with 10. => 10 Degree 
 		wait1Msec(100);
 		if(((int)(_fGyroAngle*10)) > Degree)
 		{
-			motor[motorC] = -2;
+			nSyncedMotors = synchBC;
+			nSyncedTurnRatio = -100;
+			//motor[motorC] = -2;
 	  	motor[motorB] = 2;
 	  	while(((int)(_fGyroAngle*10)) >= Degree)
 	  	{
+	  		EndTimeSlice();
 	  	}
 		}
-		motor[motorC] = 0;
+		//motor[motorC] = 0;
   	motor[motorB] = 0;
 		wait1Msec(100);
 	}
+	nSyncedMotors = synchNone;
 }
 
 #endif /* _MOVE_TURN_C_ */

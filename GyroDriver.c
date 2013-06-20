@@ -11,16 +11,24 @@
 #pragma platform(NXT)
 #pragma autoStartTasks
 
-#include "hitechnic-gyro.h"
 
 float _fGyroAngle      = 0.0;              // The absolute angle calculated by the device driver
+bool _GyrodriverInitFinish = false;
+
+
+#include "hitechnic-gyro.h"
 
 task GyroDeviceDriver()
 {
 	float rotSpeed = 0;
   float heading = 0;
 
+  nSchedulePriority = kHighPriority - 8;
+  wait1Msec(1000);
   HTGYROstartCal(HTGYRO);
+  wait1Msec(3000);
+  _GyrodriverInitFinish = true;
+
 
   // Reset the timer.
   time1[T1] = 0;
@@ -29,7 +37,9 @@ task GyroDeviceDriver()
   {
     // Wait until 20ms has passed
     while (time1[T1] < 20)
+    {
       wait1Msec(1);
+    }
 
     // Reset the timer
     time1[T1]=0;
@@ -37,8 +47,9 @@ task GyroDeviceDriver()
     // Read the current rotation speed
     rotSpeed = HTGYROreadRot(HTGYRO);
 
-    heading += rotSpeed * 0.02;
+    heading  += rotSpeed * 0.02;
     _fGyroAngle = heading;
+    nxtDisplayStringAt(62, 48, "  %03d   ", (int)_fGyroAngle);
 
   }
 }

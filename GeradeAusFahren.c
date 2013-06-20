@@ -11,50 +11,56 @@
 
 //#include "GyroDriver.c"
 
-void driveDistance(int distance)
+void driveDistance(unsigned int distance)
 {
 	int fAngleDrive = (int)_fGyroAngle;
+	nSyncedMotors = synchBC;
+	nSyncedTurnRatio = 100;
 
-	distance = distance *2;			// Damit die Strecke in mm uebergeben werden kann muss der Wert hier verdoppelt werden(Experimentiell ermittelt).
+	distance = (unsigned int)((float)distance *2.010378);
+	// Durchmesser Rad = 57mm -> u = 179.07078mm ; Encoder lst auf 360Grad auf => 1mm= 2.010378 Grad
 
 	while(distance)
 	{
 		nMotorEncoder[motorB] = 0;                // reset the Motor Encoder of Motor B
-		nMotorEncoder[motorC] = 0;                // reset the Motor Encoder of Motor C
+		nSyncedMotors = synchBC;
+		nSyncedTurnRatio = 100;
 		if(distance/100)
 		{
 			nMotorEncoderTarget[motorB] = 100;        //
-			nMotorEncoderTarget[motorC] = 100;
+			//nMotorEncoderTarget[motorC] = 100;
 
 			distance -= 100;
 		}
 		else
 		{
 			nMotorEncoderTarget[motorB] = distance;        //
-			nMotorEncoderTarget[motorC] = distance;        //
+			//nMotorEncoderTarget[motorC] = distance;        //
 			distance = 0;
 		}
-		motor[motorB] = 15;                       // motor B is run at a power level of 20
-		motor[motorC] = 15;
+		motor[motorB] = 7;                       // motor B is run at a power level of 20
+		//motor[motorC] = 15;
 
-		while(nMotorRunState[motorB] != runStateIdle && nMotorRunState[motorC] != runStateIdle)
+		while(nMotorRunState[motorB] != runStateIdle)// && nMotorRunState[motorC] != runStateIdle)
 		// while Motor B AND Motor C are still running (haven't yet reached their target):
 		{
+			EndTimeSlice();
 		}
-
+		motor[motorB] = 0;
 		if(((int)_fGyroAngle- fAngleDrive) >= 1) // Fahrkorrektur
 		{
 			turn_left(10);
-			nxtDisplayStringAt(62, 48, "  %3d Grad   ", (int)_fGyroAngle);
+			//nxtDisplayStringAt(62, 48, "  %3d Grad   ", (int)_fGyroAngle);
 		}
 		else if(((int)_fGyroAngle- fAngleDrive) <= -1)
 		{
 			turn_right(10);
-			nxtDisplayStringAt(62, 48, "  %3d Grad   ", (int)_fGyroAngle);
+			//nxtDisplayStringAt(62, 48, "  %3d Grad   ", (int)_fGyroAngle);
 		}
 		motor[motorB] = 0;                       // motor B is stopped at a power level of 0
-		motor[motorC] = 0;
+		//motor[motorC] = 0;
 	}
+	nSyncedMotors = synchNone;
 }
 
 #endif /* _GERADEAUSFAHREN_C_ */
