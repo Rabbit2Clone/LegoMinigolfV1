@@ -1,11 +1,3 @@
-/*#pragma config(Sensor, S1,     sonar,          sensorSONAR)
-#pragma config(Sensor, S2,     none,           sensorNone)
-#pragma config(Sensor, S3,     none,           sensorNone)
-#pragma config(Sensor, S4,     gyro,           sensorI2CHiTechnicGyro)
-#pragma config(Motor,  motorA,          hitMotor,      tmotorNXT, PIDControl, encoder)
-#pragma config(Motor,  motorB,          rightMotor,    tmotorNXT, PIDControl, encoder)
-#pragma config(Motor,  motorC,          leftMotor,     tmotorNXT, PIDControl, encoder)*/
-
 #ifndef _GERADEAUSFAHREN_C_
 #define _GERADEAUSFAHREN_C_
 
@@ -38,11 +30,10 @@ void driveDistance(unsigned int distance)
 			//nMotorEncoderTarget[motorC] = distance;        //
 			distance = 0;
 		}
-		motor[motorB] = 7;                       // motor B is run at a power level of 20
+		motor[motorB] = 7;                       // motor C is run at a power level of 8
 		//motor[motorC] = 15;
 
-		while(nMotorRunState[motorB] != runStateIdle)// && nMotorRunState[motorC] != runStateIdle)
-		// while Motor B AND Motor C are still running (haven't yet reached their target):
+		while(nMotorRunState[motorB] != runStateIdle)
 		{
 			EndTimeSlice();
 		}
@@ -50,15 +41,12 @@ void driveDistance(unsigned int distance)
 		if(((int)_fGyroAngle- fAngleDrive) >= 1) // Fahrkorrektur
 		{
 			turn_left(10);
-			//nxtDisplayStringAt(62, 48, "  %3d Grad   ", (int)_fGyroAngle);
 		}
 		else if(((int)_fGyroAngle- fAngleDrive) <= -1)
 		{
 			turn_right(10);
-			//nxtDisplayStringAt(62, 48, "  %3d Grad   ", (int)_fGyroAngle);
 		}
-		motor[motorB] = 0;                       // motor B is stopped at a power level of 0
-		//motor[motorC] = 0;
+		motor[motorB] = 0;                       // motor C is stopped at a power level of 0
 	}
 	nSyncedMotors = synchNone;
 }

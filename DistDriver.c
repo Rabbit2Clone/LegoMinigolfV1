@@ -1,16 +1,12 @@
 #ifndef _DISTDRIVER_C_
 #define _DISTDRIVER_C_
 
-#pragma platform(NXT)
-#pragma autoStartTasks
-
 #include "mindsensors-irdist.h"
 
 unsigned int _Distance = 0;
 
 task DistDeviceDriver() {
   unsigned int distance = 0;
-  string type;
   wait1Msec(2000);
 
   while (true) {

@@ -20,120 +20,60 @@
 #include "GeradeAusFahren.c"
 #include "Ball_Schlagen.c"
 #include "Search_Object.c"
+#include "Math_func.c"
 
 task main()
 {
-	//float fOldAngle = -1;
-	//int iOldDistance = 0xFF;
-	//unsigned int i;
-
-	//unsigned int scannedDist[180];
-
+	int tempAngle;
 	eraseDisplay();
-	//Dist_PowerOn();
 	wait1Msec(11);
-
 
 	nxtDisplayStringAt(0, 63, "Minigolf 2013");
 
 	nxtDisplayStringAt(0, 48, "GyroSensor:");
 	nxtDisplayStringAt(0, 40, "SonarSensor:");
 
-	nxtDisplayStringAt(0, 32, "Angle to Ball:");
-	nxtDisplayStringAt(0, 24, "Distance to Ball:");
-
-	wait1Msec(1000);
-
-	//while (!bIsGyroInitialized())
+	//StartTask(GyroDeviceDriver);
+	StartTask(DistDeviceDriver);
+	StartTask(getHeading);
 
 	while(!_GyrodriverInitFinish) // Gyro initialisierung
 	{
 		EndTimeSlice();
 	}
-
-	/*for(i=0;i<180;i++)
+	tempAngle = (int)_fGyroAngle;
+	wait1Msec(4000);
+	while(tempAngle != (int)_fGyroAngle)
 	{
-
-	int sonarValue = GetDistance();
-	if( sonarValue !=	iOldDistance)
-	{
-	nxtDisplayStringAt(62, 39, "  %2dmm   ", (long) sonarValue);
-	iOldDistance = sonarValue;
-	scannedDist[i] = sonarValue;
+			nxtDisplayStringAt(0, 48, "GYRO FAIL, %02d",(int)_fGyroAngle);
+			nxtDisplayStringAt(0, 40, "Drift after INIT");
 	}
 
-	if (_fGyroAngle != fOldAngle)
-	{
-	nxtDisplayStringAt(62, 48, "  %3d Grad   ", (long)_fGyroAngle);
-	fOldAngle = _fGyroAngle;
-	}
-	//turn_right(1);
-	wait1Msec(200);
-	}*/
+	searchObjekt();
+	wait1Msec(500);
+	calc_koordinaten_Ball(_ObjectAngle,_ObjectDistance+45);
+	wait1Msec(500);
+	calc_degree_hit();
+	wait1Msec(500);
+	calc_koordinaten_Drive();
+	wait1Msec(500);
+	turn2Degree(900);
+	wait1Msec(500);
+	driveDistance(_distance_X2Drive);
+	wait1Msec(500);
+	turn2Degree(0);
+	wait1Msec(500);
+	driveDistance(_distance_Y2Drive);
+	wait1Msec(500);
+	turn2Degree(_degree_Hit);
+	wait1Msec(500);
+	driveDistance(50);
+	wait1Msec(500);
+	schlagen(40,60);
 
-
-
-	/*while(1)
-	{
-	//int sonarValue = GetDistance();
-	int sonarValue = GetDistanceRead();
-	if( sonarValue !=	iOldDistance)
-	{
-	nxtDisplayStringAt(62, 39, "  %2dmm   ", (long) sonarValue);
-	iOldDistance = sonarValue;
-	}
-
-	if (_fGyroAngle != fOldAngle)
-	{
-	nxtDisplayStringAt(62, 48, "  %3d Grad   ", (long)_fGyroAngle);
-	fOldAngle = _fGyroAngle;
-	}
-	wait1Msec(100);
-	//turn_left(10);
-	}*/
-	/*
-	iOldDistance = GetDistanceRead();
-	nxtDisplayStringAt(62, 39, "  %2dmm   ", (int) iOldDistance);
-
-	while(iOldDistance > 150)
-	{
-	driveDistance(iOldDistance-150);
-	wait1Msec(200);
-	iOldDistance = GetDistanceRead();
-	nxtDisplayStringAt(62, 39, "  %2dmm   ", (int) iOldDistance);
-	}
-	wait1Msec(200);
-	iOldDistance = GetDistanceRead();
-	if(iOldDistance < 150)
-	{
-	wait1Msec(200);
-	iOldDistance = GetDistanceRead();
-	}
-
-	nxtDisplayStringAt(62, 39, "  %2dmm   ", (int) iOldDistance);
-	nxtDisplayStringAt(62, 48, "  %3d Grad   ", (int)_fGyroAngle);
-	turn_left(900);
-	nxtDisplayStringAt(62, 48, "  %3d Grad   ", (int)_fGyroAngle);
-	wait1Msec(200);
-	driveDistance(55);
-	wait1Msec(200);
-	turn_right(900);
-	nxtDisplayStringAt(62, 48, "  %3d Grad   ", (int)_fGyroAngle);
-	wait1Msec(200);
-	driveDistance(iOldDistance);
-	wait1Msec(200);
-	schlagen(20,80);*/
-
-	//searchObjekt();
-	//driveDistance(300);
 	while(1)
 	{
-		//EndTimeSlice();
-
-		nxtDisplayStringAt(62, 48, "  %03d   ", (int)_fGyroAngle);
-		turn2Degree(0);
-		wait10Msec(10);
+		EndTimeSlice();
 	}
-	//Dist_PowerOff();
 	StopAllTasks();
 }
