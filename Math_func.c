@@ -68,7 +68,7 @@ void calc_degree_hit(void)
 
 	_degree_Hit = (int)((atan((float)distance_Y_ball2hole/(float)distance_X_ball2hole))/PI*180.0);
 
-	_degree_Hit *= -10;
+	//_degree_Hit *= -10;
 	nxtDisplayStringAt(50, 32, "AH: %02d",_degree_Hit);
 }
 

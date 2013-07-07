@@ -24,7 +24,7 @@ void searchObjekt(void)
 			if(_Distance < _ObjectDistance)
 			{
 				_ObjectDistance = _Distance; // Distance to Object
-				_ObjectAngle = ((i*10)-700); // Degree of Object
+				_ObjectAngle = _fGyroAngle*10; //((i*10)-700); // Degree of Object
 
 					nxtDisplayStringAt(0, 32, "A:%03d   ", _ObjectAngle);
 					nxtDisplayStringAt(0, 24, "D:%02dmm  ", _ObjectDistance);
